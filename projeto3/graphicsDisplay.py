@@ -58,8 +58,7 @@ GHOST_SHAPE = [
 GHOST_SIZE = 0.65
 SCARED_COLOR = formatColor(1,1,1)
 
-#GHOST_VEC_COLORS = map(colorToVector, GHOST_COLORS)
-GHOST_VEC_COLORS =  [colorToVector(c) for c in GHOST_COLORS]
+GHOST_VEC_COLORS = [colorToVector(c) for c in GHOST_COLORS]
 
 PACMAN_COLOR = formatColor(255.0/255.0,255.0/255.0,61.0/255)
 PACMAN_SCALE = 0.5
@@ -116,7 +115,7 @@ class InfoPane:
             size = 10
 
         for i, d in enumerate(distances):
-            t = text( self.toScreen(self.width/2 + self.width/8 * i, 0), GHOST_COLORS[i+1], d, "Times", size, "bold")
+            t = text( self.toScreen(self.width//2 + self.width//8 * i, 0), GHOST_COLORS[i+1], d, "Times", size, "bold")
             self.ghostDistanceText.append(t)
 
     def updateScore(self, score):
@@ -526,8 +525,8 @@ class PacmanGraphics:
         foodImages = []
         color = FOOD_COLOR
         for xNum, x in enumerate(foodMatrix):
-            if self.capture and (xNum * 2) < foodMatrix.width: color = TEAM_COLORS[0]
-            if self.capture and (xNum * 2) >= foodMatrix.width: color = TEAM_COLORS[1]
+            if self.capture and (xNum * 2) <= foodMatrix.width: color = TEAM_COLORS[0]
+            if self.capture and (xNum * 2) > foodMatrix.width: color = TEAM_COLORS[1]
             imageRow = []
             foodImages.append(imageRow)
             for yNum, cell in enumerate(x):

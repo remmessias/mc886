@@ -12,11 +12,24 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
+# util.py
+# -------
+# Licensing Information:  You are free to use or extend these projects for
+# educational purposes provided that (1) you do not distribute or publish
+# solutions, (2) you retain this notice, and (3) you provide clear
+# attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
+# 
+# Attribution Information: The Pacman AI projects were developed at UC Berkeley.
+# The core projects and autograders were primarily created by John DeNero
+# (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
+# Student side autograding was added by Brad Miller, Nick Hay, and
+# Pieter Abbeel (pabbeel@cs.berkeley.edu).
+
+
 import sys
 import inspect
 import heapq, random
-#import cStringIO
-import io
+
 
 class FixedRandom:
     def __init__(self):
@@ -160,31 +173,23 @@ class PriorityQueue:
       has a priority associated with it and the client is usually interested
       in quick retrieval of the lowest-priority item in the queue. This
       data structure allows O(1) access to the lowest-priority item.
-
-      Note that this PriorityQueue does not allow you to change the priority
-      of an item.  However, you may insert the same item multiple times with
-      different priorities.
     """
     def  __init__(self):
         self.heap = []
         self.count = 0
 
     def push(self, item, priority):
-        # FIXME: restored old behaviour to check against old results better
-        # FIXED: restored to stable behaviour
         entry = (priority, self.count, item)
-        # entry = (priority, item)
         heapq.heappush(self.heap, entry)
         self.count += 1
 
     def pop(self):
         (_, _, item) = heapq.heappop(self.heap)
-        #  (_, item) = heapq.heappop(self.heap)
         return item
 
     def isEmpty(self):
         return len(self.heap) == 0
-        
+
     def update(self, item, priority):
         # If item already in priority queue with higher priority, update its priority and rebuild the heap.
         # If item already in priority queue with equal or lower priority, do nothing.
@@ -238,12 +243,12 @@ class Counter(dict):
     all keys are defaulted to have value 0.  Using a dictionary:
 
     a = {}
-    print a['test']
+    print(a['test'])
 
     would give an error, while the Counter class analogue:
 
     >>> a = Counter()
-    >>> print a['test']
+    >>> print(a['test'])
     0
 
     returns the default 0 value. Note that to reference a key
@@ -252,14 +257,14 @@ class Counter(dict):
 
     >>> a = Counter()
     >>> a['test'] = 2
-    >>> print a['test']
+    >>> print(a['test'])
     2
 
     This is very useful for counting things without initializing their counts,
     see for example:
 
     >>> a['blah'] += 1
-    >>> print a['blah']
+    >>> print(a['blah'])
     1
 
     The counter also includes additional functionality useful in implementing
@@ -290,7 +295,7 @@ class Counter(dict):
         Returns the key with the highest value.
         """
         if len(self.keys()) == 0: return None
-        all = list(self.items())
+        all = self.items()
         values = [x[1] for x in all]
         maxIndex = values.index(max(values))
         return all[maxIndex][0]
@@ -307,9 +312,9 @@ class Counter(dict):
         >>> a.sortedKeys()
         ['second', 'third', 'first']
         """
-        sortedItems = list(self.items())
+        sortedItems = self.items()
         compare = lambda x, y:  sign(y[1] - x[1])
-        sortedItems.sort(key=cmp_to_key(compare))
+        sortedItems.sort(cmp=compare)
         return [x[0] for x in sortedItems]
 
     def totalCount(self):
@@ -445,7 +450,7 @@ def raiseNotDefined():
     line = inspect.stack()[1][2]
     method = inspect.stack()[1][3]
 
-    print("*** Method not implemented: %s at line %s of %s" % method, line, fileName)
+    print("*** Method not implemented: %s at line %s of %s" % (method, line, fileName))
     sys.exit(1)
 
 def normalize(vectorOrCounter):
@@ -583,14 +588,13 @@ def lookup(name, namespace):
         options += [obj[1] for obj in namespace.items() if obj[0] == name ]
         if len(options) == 1: return options[0]
         if len(options) > 1: raise Exception('Name conflict for %s')
-        raise Exception('%s not found as a method or class', name)
+        raise Exception('%s not found as a method or class' % name)
 
 def pause():
     """
     Pauses the output stream awaiting user feedback.
     """
-    print("<Press enter/return to continue>")
-    input()
+    input("<Press enter/return to continue>")
 
 
 # code to handle timeouts

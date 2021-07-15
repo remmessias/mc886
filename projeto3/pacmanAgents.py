@@ -48,5 +48,40 @@ class GreedyAgent(Agent):
         bestActions = [pair[1] for pair in scored if pair[0] == bestScore]
         return random.choice(bestActions)
 
+class GeneticAgent(Agent):
+    def __init__(self, passos= ""):
+        self.passos = passos
+        self.posicao = 0
+
+    def getAction(self, state):
+        if self.posicao == len(self.passos):
+            self.posicao = 0
+        acoesPossiveis = state.getLegalPacmanActions()
+        atual = state.getPacmanState().configuration.direction
+
+        if atual == Directions.STOP: 
+            atual = Directions.NORTH
+
+        proximaAcao = self.passos[self.posicao]
+        if proximaAcao == 'L':
+            proximaAcao = Directions.LEFT[atual]
+        else:
+            proximaAcao = Directions.RIGHT[atual]
+
+        if proximaAcao in acoesPossiveis:
+            self.posicao = self.posicao + 1
+            return proximaAcao
+
+        if atual in acoesPossiveis: 
+            return atual
+
+        return Directions.REVERSE[atual]
+    
+    def init_state(self):
+        self.posicao = 0
+
 def scoreEvaluation(state):
+    return state.getScore()
+    
+def timeEvaluation(state):
     return state.getScore()
